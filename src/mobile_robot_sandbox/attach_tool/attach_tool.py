@@ -79,9 +79,9 @@ def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, d
         ee_frame = Frame(tool_centerpoint, tool_orientation_y, vec)
 
     elif tool_id == 7:
-        filename_visuals = 'abele/split_90deg/250515_90deg_adapter_straight_inlet.stl'
-        tool_name = '2K_extruder_90deg'
-        filename_collision = 'abele/split_90deg/250515_90deg_adapter_straight_inlet.stl'
+        filename_visuals = 'abele/250515_0deg_adapter_straight_inlet.stl'
+        tool_name = '2K_extruder_0deg'
+        filename_collision = 'abele/250515_0deg_adapter_straight_inlet.stl'
         tool_centerpoint = (0.00302, -0.29571, 0.40445)
         tool_orientation_x = (0.0366, 0, 0)
         tool_orientation_y = (0, 0.0051, 0.0141)
@@ -89,7 +89,7 @@ def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, d
 
     elif tool_id == 8:  # abele
         filename_visuals = 'abele/split_90deg/250213_90deg_adapter_straight_inlet.stl'
-        tool_name = 'extruder'
+        tool_name = '2K_extruder_90deg'
         filename_collision = 'abele/split_90deg/250213_90deg_adapter_straight_inlet.stl'
         tool_centerpoint = (0.000, -0.29786, 0.361)
         tool_orientation_x = (0.0151, 0, 0)
@@ -98,7 +98,7 @@ def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, d
 
     elif tool_id == 9:  # measurement-tool-abele-tip
         filename_visuals = 'abele/split_90deg/250213_90deg_adapter.stl'
-        tool_name = 'pin'
+        tool_name = '2K_measurement_tip'
         filename_collision = 'abele/split_90deg/250213_90deg_adapter.stl'
         tool_centerpoint = (0, -0.30709, 0.36211)
         tool_orientation_x = (0.0781, 0, 0)
@@ -142,3 +142,4 @@ def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, d
     return tool_obj, ee_plane, visuals, collision
 
 # Todo: Cleanup the attach_tool.py and corresponting geometry in the data folder.
+# Todo: find a better way to import the tool geometry so we dont mix up the code with the data. Config file with path to geometry?
