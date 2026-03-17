@@ -16,6 +16,13 @@ Installation
 
     pip install git+https://github.com/augmentedfabricationlab/mobile_robot_sandbox.git
 
+Updating
+--------
+
+::
+
+    pip install --upgrade --force-reinstall --no-cache-dir git+https://github.com/augmentedfabricationlab/mobile_robot_sandbox.git@main
+
 
 Acknowledgements
 ----------------
