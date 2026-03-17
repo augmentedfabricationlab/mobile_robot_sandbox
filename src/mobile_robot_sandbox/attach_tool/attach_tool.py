@@ -36,7 +36,7 @@ def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, d
         scanner_frame = Frame([-0.0167, 0.0431, 0.3908], [1, 0, 0], [0, 1, 0])
 
         tool_frames = {"pin_x3": pin_frame, "camera": camera_frame, "scanner": scanner_frame}
-        ee_frame = tool_frames["pin"]
+        ee_frame = tool_frames["pin_x3"]
         multitool = True
 
     elif tool_id == 2:  # marker tracking camera with field of View (FOV)
