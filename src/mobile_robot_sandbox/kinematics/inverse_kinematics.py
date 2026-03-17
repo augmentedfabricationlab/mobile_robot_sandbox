@@ -1,7 +1,9 @@
 import math
 from compas.geometry import Frame, Transformation
 from compas_robots import Configuration
-from ur_fabrication_control.kinematics.ur_kinematics import inverse_kinematics as ur_inverse_kinematics
+from ur_fabrication_control.kinematics.ur_kinematics import (
+    inverse_kinematics as ur_inverse_kinematics,
+)
 from ur_fabrication_control.kinematics.ur_params import ur_params as ur_parameters
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_ghpython.drawing import draw_frame
@@ -14,12 +16,19 @@ def inverse_kinematics(robot, plane_WCS, lift, idx=0):
 
     frame_WCS = plane_to_compas_frame(plane_WCS)
 
-    tf_client = tf.TFClient(robot.mobile_client.ros_client, fixed_frame="robot_base_footprint", angular_threshold=0.0, rate=10.0)
+    tf_client = tf.TFClient(
+        robot.mobile_client.ros_client,
+        fixed_frame="robot_base_footprint",
+        angular_threshold=0.0,
+        rate=10.0,
+    )
     tf_client.subscribe("robot_arm_base", robot._receive_base_frame_callback)
 
     # transform frame to robot coordinate system
     print(robot.RCF)
-    T1 = Transformation.from_frame_to_frame(robot.RCF.translated([0, 0, lift]), Frame.worldXY())
+    T1 = Transformation.from_frame_to_frame(
+        robot.RCF.translated([0, 0, lift]), Frame.worldXY()
+    )
     T2 = Transformation.from_frame_to_frame(robot.BCF, Frame.worldXY())
 
     frame_RCS = frame_WCS.transformed(T1 * T2)
@@ -39,12 +48,16 @@ def inverse_kinematics(robot, plane_WCS, lift, idx=0):
 
     if not len(solutions):
         joint_values = [0, 0, 0, 0, 0, 0]
-        configuration = Configuration.from_prismatic_and_revolute_values([robot.lift_height], joint_values)
+        configuration = Configuration.from_prismatic_and_revolute_values(
+            [robot.lift_height], joint_values
+        )
     else:
         joint_values = solutions[idx]
         # rotation fix
         joint_values[1] -= 2 * math.pi
-        configuration = Configuration.from_prismatic_and_revolute_values([robot.lift_height], joint_values)
+        configuration = Configuration.from_prismatic_and_revolute_values(
+            [robot.lift_height], joint_values
+        )
 
     print(configuration)
     return configuration, plane_tool0_RCS, plane_RCS, solutions
