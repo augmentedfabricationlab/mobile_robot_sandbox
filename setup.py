@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import, print_function
 
+import ast
 import io
 import re
 from glob import glob
@@ -24,8 +25,19 @@ def read(*names, **kwargs):
     ).read()
 
 
-about = {}
-exec(read('src', 'mobile_robot_sandbox', '__version__.py'), about)
+def read_about(filepath):
+    """Parse __version__.py without exec()."""
+    data = {}
+    tree = ast.parse(read(filepath), filename=filepath)
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id.startswith("__"):
+                    data[target.id] = ast.literal_eval(node.value)
+    return data
+
+
+about = read_about(join('src', 'mobile_robot_sandbox', '__version__.py'))
 
 setup(
     name=about['__title__'],
@@ -36,8 +48,7 @@ setup(
     author_email=about['__author_email__'],
     url=about['__url__'],
     long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M |
-                   re.S).sub('', read('README.rst')),
+        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
     ),
     packages=find_packages('src'),
