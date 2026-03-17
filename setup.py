@@ -42,6 +42,12 @@ setup(
     ),
     packages=find_packages('src'),
     package_dir={'': 'src'},
+    package_data={
+        'mobile_robot_sandbox': [
+            'attach_tool/data/**/*',
+            'attach_tool/data/*',
+        ],
+    },
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     include_package_data=True,
     zip_safe=False,

@@ -9,13 +9,17 @@ from mobile_robot_control.multitool import MultiTool
 from compas_ghpython.drawing import draw_frame
 
 
-# Repo-level data/ directory (two levels up from this file: attach_tool/ -> mobile_robot_sandbox/ -> src/ -> repo root)
-_DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'data'))
+# Prefer packaged data (installed with pip), then fall back to repo-level data for local development.
+_PACKAGE_DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data'))
+_REPO_DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'data'))
 
 
 def attach_tool(tool_id, robot=None, attach=False, remove=False, update=False, data_path=None, show=False):
     if data_path is None:
-        data_path = _DATA_DIR
+        if os.path.isdir(_PACKAGE_DATA_DIR):
+            data_path = _PACKAGE_DATA_DIR
+        else:
+            data_path = _REPO_DATA_DIR
     filename_collision = None
     multitool = False
     visuals = None
